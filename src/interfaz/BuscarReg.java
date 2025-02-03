@@ -1,3 +1,4 @@
+package interfaz;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -39,7 +40,6 @@ public class BuscarReg extends JDialog {
 	}
 	*/
 	ActionListener listenerDiaologo = new ActionListener() {
-		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			gestionarBotones(e);
@@ -47,30 +47,35 @@ public class BuscarReg extends JDialog {
 	};
 	
 	private void gestionarBotones(ActionEvent e) {
-			switch(e.getActionCommand()) {
-				case "aceptar":
-					int i = lstCDs.getSelectedIndex();
-					if (i >= 0) ventanaPadre.setRegDatos(i);
-					break;
-				case "cancelar":
-					setVisible(false);
-					dispose();
-					break;
-				case "borrar":
-					int j = lstCDs.getSelectedIndex();
-					if (j >=0) {
-						int respuesta = JOptionPane.showConfirmDialog(null,
-						"Esta acción eliminará el CD ¿desea continuar?",
-						"Atención", JOptionPane.YES_NO_OPTION);
-						if (respuesta == JOptionPane.YES_OPTION) {
-						ventanaPadre.getCDs().remove(j);
+		switch(e.getActionCommand()) {
+			case "aceptar":
+				int i = lstCDs.getSelectedIndex();
+				if (i >= 0) ventanaPadre.setRegDatos(i);
+				break;
+			case "cancelar":
+				setVisible(false);
+				dispose();
+				break;
+			case "borrar":
+				int j = lstCDs.getSelectedIndex();
+				if (j >=0) {
+					int respuesta = JOptionPane.showConfirmDialog(null,
+					"Esta acción eliminará el CD ¿desea continuar?",
+					"Atención", JOptionPane.YES_NO_OPTION);
+					
+					if (respuesta == JOptionPane.YES_OPTION) {
+						
+						CDBean cd = ventanaPadre.getCDs().get(j);
+						ventanaPadre.consultas.deleteCD(cd.ID);
+						
 						this.actualizarLista();
+					}
 				}
-			}
 		}
 	}
 
 	public void actualizarLista() {
+		ventanaPadre.cargarListaCDs();
 		lstCDs.setListData(new Vector<>(ventanaPadre.getCDs()));
 	}
 
@@ -110,7 +115,6 @@ public class BuscarReg extends JDialog {
 				btnAceptar.setActionCommand("aceptar");
 				btnAceptar.setName("btnAceptar");
 				btnAceptar.setMnemonic('a');
-				btnAceptar.setActionCommand("OK");
 				buttonPane.add(btnAceptar);
 				getRootPane().setDefaultButton(btnAceptar);
 			}
@@ -120,7 +124,6 @@ public class BuscarReg extends JDialog {
 				btnCancelar.setActionCommand("cancelar");
 				btnCancelar.setName("btnCancelar");
 				btnCancelar.setMnemonic('c');
-				btnCancelar.setActionCommand("Cancel");
 				buttonPane.add(btnCancelar);
 			}
 			{

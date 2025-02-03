@@ -1,11 +1,24 @@
+package interfaz;
 public class CDBean implements Comparable<CDBean>{
 	
+	int ID;
 	String titulo, autor, genero, prestamo;
-	public CDBean(String titulo, String autor, String genero, String prestamo) {
+	
+	public CDBean(int id, String titulo, String autor, String genero, String prestamo) {
+		this.ID = id;
 		this.titulo = titulo;
 		this.autor = autor;
 		this.genero = genero;
 		this.prestamo = prestamo;
+	}
+	
+
+
+	public int getID() {
+		return ID;
+	}
+	public void setID(int ID) {
+		this.ID = ID;
 	}
 	public String getTitulo() {
 		return titulo;

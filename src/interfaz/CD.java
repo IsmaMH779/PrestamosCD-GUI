@@ -1,3 +1,4 @@
+package interfaz;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -20,6 +21,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
+
+import db.Consultas;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -36,6 +40,7 @@ public class CD extends JFrame {
 	private JTextArea txtPrestamo;
 	
 	private BuscarReg dlgBuscar;
+	Consultas consultas;
 
 	/**
 	 * Launch the application.
@@ -55,6 +60,8 @@ public class CD extends JFrame {
 	}
 	
 	public List<CDBean> getCDs() {
+		
+		
 		return CDs;
 	}
 	
@@ -86,6 +93,8 @@ public class CD extends JFrame {
 	 * Create the frame.
 	 */
 	public CD() {
+		consultas = new Consultas();
+		
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -121,8 +130,8 @@ public class CD extends JFrame {
 				genero = txtGenero.getText();
 				descripcion = txtPrestamo.getText();
 				
-				CDs.add(new CDBean(titulo, autor, genero, descripcion));
-				
+				consultas.addNewCD(titulo, autor, genero, descripcion);
+
 				if (dlgBuscar != null && dlgBuscar.isVisible())
 					dlgBuscar.actualizarLista();
 				
@@ -135,6 +144,8 @@ public class CD extends JFrame {
 		JMenuItem mntmBuscarRegistro = new JMenuItem("Buscar registro");
 		mntmBuscarRegistro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				// actualizar la lista antes de abrir la ventana
+				cargarListaCDs();
 				mostrarBusqueda();
 			}
 		});
@@ -199,19 +210,8 @@ public class CD extends JFrame {
 		contentPane.add(txtPrestamo);
 	}
 	
-	private void cargarListaCDs() {
-		CDs.add(new CDBean("Plays Monk", "Jamie Saft Trio", "Jazz", null));
-		CDs.add(new CDBean("The Bricktionary", "Boldy James & Harry Fraud", "Hip-Hop", "Prestado a Rosa el 11/09/2024"));
-		CDs.add(new CDBean("Ballads of Harry Houdini", "Papa M", "Indie", "Prestado a Marc el 15/09/2024"));
-		CDs.add(new CDBean("Dead Slow", "Heavy Moss", "Rock", null));
-		CDs.add(new CDBean("¿Y Qué Si Todo Acaba Mal?", "Kendall Peña", "Pop", "Prestado a Tomás el 22/10/2024"));
-		CDs.add(new CDBean("Merciless", "Body Count", "Indie", "Prestado a Julián el 01/11/2024"));
-		CDs.add(new CDBean("Happy New Year EP", "The Staves", "Country", null));
-		CDs.add(new CDBean("Real Striker Music", "Babyfxce E", "Hip-Hop", "Prestado a Esther el 17/11/2024"));
-		CDs.add(new CDBean("Peace of Action", "Damu The Fudgemunk", "Jazz",null));
-		CDs.add(new CDBean("Phantom Brickworks", "Bibio", "Electronic", "Prestado a Josep el 01/12/2024"));
-		CDs.add(new CDBean("10 Years of Rhythm Section International", "Various Artists", "Electronic", null));
-		CDs.add(new CDBean("Wicked OST", "Various Artists", "Pop", null));
-		CDs.add(new CDBean("Live From Brooklyn Paramount", "Black Pumas","Rock", "Prestado a Sandra el 02/11/2024"));
+	public void cargarListaCDs() {
+		CDs.clear();
+		CDs.addAll(consultas.getAllCDs());
 	}
 }
