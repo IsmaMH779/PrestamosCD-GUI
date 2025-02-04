@@ -40,7 +40,7 @@ public class Consultas {
 		return cds;
 	}
 	
-	public void addNewCD(String titulo, String autor, String genero, String prestamo) {
+	public void addNewCD(String titulo, String autor, String genero, String prestamo) {	
 		 String sql = "INSERT INTO cds (titulo, autor, genero, prestamo) VALUES (?, ?, ?, ?)";
 		
 		try (PreparedStatement ps = Conexion.getConexion().prepareStatement(sql)) {

@@ -10,6 +10,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -28,17 +30,6 @@ public class BuscarReg extends JDialog {
 	 * Launch the application.
 	 */
 	
-	/*
-	public static void main(String[] args) {
-		try {
-			BuscarReg dialog = new BuscarReg();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	*/
 	ActionListener listenerDiaologo = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -48,10 +39,6 @@ public class BuscarReg extends JDialog {
 	
 	private void gestionarBotones(ActionEvent e) {
 		switch(e.getActionCommand()) {
-			case "aceptar":
-				int i = lstCDs.getSelectedIndex();
-				if (i >= 0) ventanaPadre.setRegDatos(i);
-				break;
 			case "cancelar":
 				setVisible(false);
 				dispose();
@@ -103,21 +90,23 @@ public class BuscarReg extends JDialog {
 			
 			lstCDs.setListData(new Vector<>(ventanaPadre.getCDs()));
 			
+			// accion a la hora de seleccionar un cd este se muestre en la pantalla padre
+            lstCDs.addListSelectionListener(new ListSelectionListener() {
+				@Override
+				public void valueChanged(ListSelectionEvent e) {
+                    if (lstCDs.getSelectedIndex() != -1) {
+                    	int i = lstCDs.getSelectedIndex();
+        				if (i >= 0) ventanaPadre.setRegDatos(i);
+                    }
+				}
+            });
+			
 			scPanel.setViewportView(lstCDs);
 		}
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				JButton btnAceptar = new JButton("Aceptar");
-				btnAceptar.addActionListener(listenerDiaologo);
-				btnAceptar.setActionCommand("aceptar");
-				btnAceptar.setName("btnAceptar");
-				btnAceptar.setMnemonic('a');
-				buttonPane.add(btnAceptar);
-				getRootPane().setDefaultButton(btnAceptar);
-			}
 			{
 				JButton btnCancelar = new JButton("Cancelar");
 				btnCancelar.addActionListener(listenerDiaologo);

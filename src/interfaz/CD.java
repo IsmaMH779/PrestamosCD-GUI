@@ -76,6 +76,7 @@ public class CD extends JFrame {
 		txtAutor.setText(cd.getAutor());
 		txtGenero.setText(cd.getGenero());
 		txtPrestamo.setText(cd.getPrestamo());
+		
 	}
 	
 	private void salirForm() {

@@ -5,7 +5,7 @@ import java.sql.*;
 
 public class Conexion {
 	private static Connection conDB = null;
-	private static String DBUrl = "jdbc:mysql://localhost:3306/prestamos?user=root&password=root";
+	private static String DBUrl = "jdbc:mysql://172.16.0.11:3306/prestamos?user=dam2&password=secreto";
 
 	/** Devuelve un objeto del tipo Connection con la base de datos */
 	public static Connection getConexion() {
